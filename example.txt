@@ -1,0 +1,30 @@
+TO RUN THE PROGRAM VIA TERMINAL:
+
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --port 8000
+
+The service will be available at http://localhost:8000 and will implement the following endpoints:
+POST /receipts/process - Submit a receipt for processing
+GET /receipts/{id}/points - Get points for a processed receipt
+
+Example:
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "retailer": "Target",
+  "purchaseDate": "2022-01-01",
+  "purchaseTime": "13:01",
+  "items": [
+    {
+      "shortDescription": "Mountain Dew 12PK",
+      "price": "6.49"
+    }
+  ],
+  "total": "6.49"
+}' http://localhost:8000/receipts/process
+
+Output: {"id":"4c3a9961-b76b-4dff-854e-fcb0410ff2c2"}
+// Use this ID in the next command:
+
+curl http://localhost:8000/receipts/4c3a9961-b76b-4dff-854e-fcb0410ff2c2/points
+
+Output: {"points":12}% 
